@@ -20,12 +20,13 @@ requirements = [
     "matplotlib",
     "tqdm",
     "opencv-python",
-    "scikit-image"
+    "scikit-image",
 ]
 
 
 def get_extensions():
-    extensions_dir = os.path.join("fcos_core", "csrc")
+    main_dir = os.path.dirname(os.path.abspath(__file__))
+    extensions_dir = os.path.join(main_dir, "fcos_core", "csrc")
 
     main_file = glob.glob(os.path.join(extensions_dir, "*.cpp"))
     source_cpu = glob.glob(os.path.join(extensions_dir, "cpu", "*.cpp"))
@@ -37,7 +38,9 @@ def get_extensions():
     extra_compile_args = {"cxx": []}
     define_macros = []
 
-    if (torch.cuda.is_available() and CUDA_HOME is not None) or os.getenv("FORCE_CUDA", "0") == "1":
+    if (torch.cuda.is_available() and CUDA_HOME is not None) or os.getenv(
+        "FORCE_CUDA", "0"
+    ) == "1":
         extension = CUDAExtension
         sources += source_cuda
         define_macros += [("WITH_CUDA", None)]
@@ -56,7 +59,7 @@ def get_extensions():
             sources,
             include_dirs=include_dirs,
             define_macros=define_macros,
-            extra_compile_args=extra_compile_args
+            extra_compile_args=extra_compile_args,
         )
     ]
 
@@ -70,7 +73,12 @@ setup(
     url="https://github.com/tianzhi0549/FCOS",
     description="FCOS object detector in pytorch",
     scripts=["fcos/bin/fcos"],
-    packages=find_packages(exclude=("configs", "tests",)),
+    packages=find_packages(
+        exclude=(
+            "configs",
+            "tests",
+        )
+    ),
     install_requires=requirements,
     ext_modules=get_extensions(),
     cmdclass={"build_ext": torch.utils.cpp_extension.BuildExtension},
