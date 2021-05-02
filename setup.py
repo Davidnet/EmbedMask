@@ -25,8 +25,7 @@ requirements = [
 
 
 def get_extensions():
-    main_dir = os.path.dirname(os.path.abspath(__file__))
-    extensions_dir = os.path.join(main_dir, "fcos_core", "csrc")
+    extensions_dir = os.path.join("fcos_core", "csrc")
 
     main_file = glob.glob(os.path.join(extensions_dir, "*.cpp"))
     source_cpu = glob.glob(os.path.join(extensions_dir, "cpu", "*.cpp"))
