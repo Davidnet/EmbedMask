@@ -19,7 +19,7 @@ requirements = [
     "cython",
     "matplotlib",
     "tqdm",
-    "opencv-python",
+    "opencv-python-headless",
     "scikit-image",
 ]
 
